@@ -4,6 +4,7 @@
 	import StarterKit from '@tiptap/starter-kit';
 	import TextAlign from '@tiptap/extension-text-align';
 	import Underline from '@tiptap/extension-underline';
+	import MathExtension from '../extensions/MathExtension';
 
 	import { Menu, MenuButton, MenuItems, MenuItem } from '@rgossiaux/svelte-headlessui';
 	import SettingsModal from './SettingsModal.svelte';
@@ -25,13 +26,28 @@
 				TextAlign.configure({
 					types: ['heading', 'paragraph']
 				}),
-				Underline
+				Underline,
+				MathExtension
 			],
-			content: '<p>Hello World! 🌍️ </p>',
+			content: '<p></p>',
 			onTransaction: () => {
 				editor = editor;
 			}
 		});
+		// let script = document.createElement('script');
+		// script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
+		// document.head.append(script);
+		// script.onload = () => {
+		// 	window.MathJax = {
+		// 		tex: {
+		// 			inlineMath: [
+		// 				['$', '$'],
+		// 				['\\(', '\\)']
+		// 			],
+		// 			displayMath: [['$$', '$$']]
+		// 		}
+		// 	};
+		// };
 	});
 	onDestroy(() => {
 		if (editor) {
@@ -497,7 +513,10 @@
 					</svg>
 				</button>
 			</div>
-			<button class="pr-4 space-x-2 flex items-center justify-between ml-auto">
+			<button
+				on:click={() => editor.commands.setMath({ content: 'hallo' })}
+				class="pr-4 space-x-2 flex items-center justify-between ml-auto"
+			>
 				<svg
 					width="10"
 					height="10"
