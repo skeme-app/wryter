@@ -34,20 +34,13 @@
 				editor = editor;
 			}
 		});
-		// let script = document.createElement('script');
-		// script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
-		// document.head.append(script);
-		// script.onload = () => {
-		// 	window.MathJax = {
-		// 		tex: {
-		// 			inlineMath: [
-		// 				['$', '$'],
-		// 				['\\(', '\\)']
-		// 			],
-		// 			displayMath: [['$$', '$$']]
-		// 		}
-		// 	};
-		// };
+		let script = document.createElement('script');
+		script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
+		document.head.append(script);
+		script.onload = () => {
+			// @ts-ignore
+			console.log('MathJax loaded successfully');
+		};
 	});
 	onDestroy(() => {
 		if (editor) {
@@ -514,7 +507,10 @@
 				</button>
 			</div>
 			<button
-				on:click={() => editor.commands.setMath({ content: 'hallo' })}
+				on:click={() =>
+					editor.commands.addMath({
+						content: 'gegeben \\(s(t)\\) oder so und dann ist $$ v = \\frac{ds}{dt} $$'
+					})}
 				class="pr-4 space-x-2 flex items-center justify-between ml-auto"
 			>
 				<svg

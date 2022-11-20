@@ -4,8 +4,6 @@ import { mergeAttributes, Node } from '@tiptap/core';
 const MathNode = Node.create({
 	name: 'mathNode',
 
-	content: 'inline*',
-
 	addOptions() {
 		return {
 			HTMLAttributes: {},
@@ -43,16 +41,26 @@ const MathNode = Node.create({
 		console.log(node.attrs);
 		return [
 			'div',
-			mergeAttributes(this.options.HTMLAttributes, { class: 'wafwe' }),
+			mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+				class: 'wafwe'
+			}),
 			node.attrs.content
 		];
 	},
 	addCommands() {
 		return {
-			setMath:
-				(attributes) =>
-				({ commands }) => {
-					return commands.setNode(this.name, attributes);
+			addMath:
+				(attrs) =>
+				({ state, dispatch }) => {
+					const { selection } = state;
+					const position = selection.$cursor ? selection.$cursor.pos : selection.$to.pos;
+					const node = this.type.create(attrs);
+					const transaction = state.tr.insert(position, node);
+
+					dispatch(transaction);
+					setTimeout(() => {
+						MathJax.typeset();
+					}, 100);
 				}
 		};
 	}
